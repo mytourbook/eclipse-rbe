@@ -19,8 +19,10 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -32,13 +34,14 @@ import com.essiembre.eclipse.rbe.model.workbench.RBEPreferences;
 /**
  * Plugin preference page for reporting/performance options.
  * @author Pascal Essiembre
+ * @author Wolfgang Schramm
  */
 public class RBEReportingPrefPage extends AbstractRBEPrefPage {
     
     /* Preference fields. */
-    private Button reportMissingVals;
-    private Button reportDuplVals;
-    private Button reportSimVals;
+    private Combo reportMissingVals;
+    private Combo reportDuplVals;
+    private Combo reportSimVals;
     private Text reportSimPrecision;
     private Button[] reportSimValsMode = new Button[2];
 
@@ -61,30 +64,40 @@ public class RBEReportingPrefPage extends AbstractRBEPrefPage {
         new Label(composite, SWT.NONE).setText(
                 RBEPlugin.getString("prefs.perform.intro2"));
         new Label(composite, SWT.NONE).setText(" ");
-        
+
         // Report missing values?
         field = createFieldComposite(composite);
-        reportMissingVals = new Button(field, SWT.CHECK);
-        reportMissingVals.setSelection(
-                prefs.getBoolean(RBEPreferences.REPORT_MISSING_VALUES));
+    	GridData gridData = new GridData();
+    	gridData.grabExcessHorizontalSpace = true;
+    	field.setLayoutData(gridData);
         new Label(field, SWT.NONE).setText(
-                RBEPlugin.getString("prefs.perform.missingVals"));
+        		RBEPlugin.getString("prefs.perform.missingVals")); //$NON-NLS-1$
+        reportMissingVals = new Combo(field, SWT.READ_ONLY);
+        populateCombo(reportMissingVals,
+        		prefs.getInt(RBEPreferences.REPORT_MISSING_VALUES_LEVEL));
 
         // Report duplicate values?
         field = createFieldComposite(composite);
-        reportDuplVals = new Button(field, SWT.CHECK);
-        reportDuplVals.setSelection(
-                prefs.getBoolean(RBEPreferences.REPORT_DUPL_VALUES));
+    	gridData = new GridData();
+    	gridData.grabExcessHorizontalSpace = true;
+    	field.setLayoutData(gridData);
         new Label(field, SWT.NONE).setText(
-                RBEPlugin.getString("prefs.perform.duplVals"));
+        		RBEPlugin.getString("prefs.perform.duplVals")); //$NON-NLS-1$
+        reportDuplVals = new Combo(field, SWT.READ_ONLY);
+        populateCombo(reportDuplVals,
+        		prefs.getInt(RBEPreferences.REPORT_DUPL_VALUES_LEVEL));
         
         // Report similar values?
         field = createFieldComposite(composite);
-        reportSimVals = new Button(field, SWT.CHECK);
-        reportSimVals.setSelection(
-                prefs.getBoolean(RBEPreferences.REPORT_SIM_VALUES));
+    	gridData = new GridData();
+    	gridData.grabExcessHorizontalSpace = true;
+    	field.setLayoutData(gridData);
+
         new Label(field, SWT.NONE).setText(
-                RBEPlugin.getString("prefs.perform.simVals"));
+        		RBEPlugin.getString("prefs.perform.simVals")); //$NON-NLS-1$
+        reportSimVals = new Combo(field, SWT.READ_ONLY);
+        populateCombo(reportSimVals,
+        		prefs.getInt(RBEPreferences.REPORT_SIM_VALUES_LEVEL));
         reportSimVals.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 refreshEnabledStatuses();
@@ -131,15 +144,35 @@ public class RBEReportingPrefPage extends AbstractRBEPrefPage {
         return composite;
     }
 
+
+    /**
+     * Creates the items in the combo and select the item that matches the
+     * current value.
+     * @param combo
+     * @param selectedLevel
+     */
+    private void populateCombo(Combo combo, int selectedLevel) {
+    	
+    	combo.add(RBEPlugin.getString("prefs.perform.message.ignore"));
+    	combo.add(RBEPlugin.getString("prefs.perform.message.info"));
+    	combo.add(RBEPlugin.getString("prefs.perform.message.warning"));
+    	combo.add(RBEPlugin.getString("prefs.perform.message.error"));
+    	
+    	combo.select(selectedLevel);
+    	
+    	GridData gridData = new GridData();
+    	gridData.grabExcessHorizontalSpace = true;
+    	gridData.horizontalAlignment = SWT.RIGHT;
+    	combo.setLayoutData(gridData);
+    }
+    
+    
     @Override
     public boolean performOk() {
         IPreferenceStore prefs = getPreferenceStore();
-        prefs.setValue(RBEPreferences.REPORT_MISSING_VALUES,
-                reportMissingVals.getSelection());
-        prefs.setValue(RBEPreferences.REPORT_DUPL_VALUES,
-                reportDuplVals.getSelection());
-        prefs.setValue(RBEPreferences.REPORT_SIM_VALUES,
-                reportSimVals.getSelection());
+        prefs.setValue(RBEPreferences.REPORT_MISSING_VALUES_LEVEL, reportMissingVals.getSelectionIndex());
+        prefs.setValue(RBEPreferences.REPORT_DUPL_VALUES_LEVEL, reportDuplVals.getSelectionIndex());
+        prefs.setValue(RBEPreferences.REPORT_SIM_VALUES_LEVEL, reportSimVals.getSelectionIndex());
         prefs.setValue(RBEPreferences.REPORT_SIM_VALUES_WORD_COMPARE,
                 reportSimValsMode[0].getSelection());
         prefs.setValue(RBEPreferences.REPORT_SIM_VALUES_LEVENSTHEIN,
@@ -154,12 +187,9 @@ public class RBEReportingPrefPage extends AbstractRBEPrefPage {
     @Override
     protected void performDefaults() {
         IPreferenceStore prefs = getPreferenceStore();
-        reportMissingVals.setSelection(prefs.getDefaultBoolean(
-                RBEPreferences.REPORT_MISSING_VALUES));
-        reportDuplVals.setSelection(prefs.getDefaultBoolean(
-                RBEPreferences.REPORT_DUPL_VALUES));
-        reportSimVals.setSelection(prefs.getDefaultBoolean(
-                RBEPreferences.REPORT_SIM_VALUES));
+        reportMissingVals.select(prefs.getDefaultInt(RBEPreferences.REPORT_MISSING_VALUES_LEVEL));
+        reportDuplVals.select(prefs.getDefaultInt(RBEPreferences.REPORT_DUPL_VALUES_LEVEL));
+        reportSimVals.select(prefs.getDefaultInt(RBEPreferences.REPORT_SIM_VALUES_LEVEL));
         reportSimValsMode[0].setSelection(prefs.getDefaultBoolean(
                 RBEPreferences.REPORT_SIM_VALUES_WORD_COMPARE));
         reportSimValsMode[1].setSelection(prefs.getDefaultBoolean(
@@ -171,7 +201,8 @@ public class RBEReportingPrefPage extends AbstractRBEPrefPage {
     }
 
     /*default*/ void refreshEnabledStatuses() {
-        boolean isReportingSimilar = reportSimVals.getSelection();
+    	
+        boolean isReportingSimilar = reportSimVals.getSelectionIndex() != RBEPreferences.VALIDATION_MESSAGE_IGNORE;
 
         for (int i = 0; i < reportSimValsMode.length; i++) {
             reportSimValsMode[i].setEnabled(isReportingSimilar);

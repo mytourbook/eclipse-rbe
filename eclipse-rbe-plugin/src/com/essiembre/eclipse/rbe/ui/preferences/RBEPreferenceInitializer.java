@@ -73,8 +73,8 @@ public class RBEPreferenceInitializer extends AbstractPreferenceInitializer {
         prefs.setDefault(RBEPreferences.KEEP_EMPTY_FIELDS, false);
 
         // Reporting/Performance
-        prefs.setDefault(RBEPreferences.REPORT_MISSING_VALUES, true);
-        prefs.setDefault(RBEPreferences.REPORT_DUPL_VALUES, true);
+        prefs.setDefault(RBEPreferences.REPORT_MISSING_VALUES_LEVEL, RBEPreferences.VALIDATION_MESSAGE_ERROR);
+        prefs.setDefault(RBEPreferences.REPORT_DUPL_VALUES_LEVEL, RBEPreferences.VALIDATION_MESSAGE_WARNING);
         prefs.setDefault(RBEPreferences.REPORT_SIM_VALUES_WORD_COMPARE, true);
         prefs.setDefault(RBEPreferences.REPORT_SIM_VALUES_PRECISION, 0.75d);
 

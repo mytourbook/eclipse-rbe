@@ -25,6 +25,22 @@ import com.essiembre.eclipse.rbe.RBEPlugin;
  */
 public final class RBEPreferences {
    
+	/** the corresponding validation message with such a preference should
+	 * not be generated */
+	public static final int VALIDATION_MESSAGE_IGNORE	= 0;
+	
+	/** the corresponding validation message with such a preference should
+	 * generate a marker with severity 'info' */
+	public static final int VALIDATION_MESSAGE_INFO		= 1;
+	
+	/** the corresponding validation message with such a preference should
+	 * generate a marker with severity 'warning' */
+	public static final int VALIDATION_MESSAGE_WARNING	= 2;
+	
+	/** the corresponding validation message with such a preference should
+	 * generate a marker with severity 'error' */
+	public static final int VALIDATION_MESSAGE_ERROR	= 3;
+	
     /** Key group separator. */
     public static final String KEY_GROUP_SEPARATOR =
             "keyGroupSeparator";
@@ -110,12 +126,13 @@ public final class RBEPreferences {
     /** New Line Type: Mac. */
     public static final int NEW_LINE_MAC = 2;
 
-    /** Report missing values. */
-    public static final String REPORT_MISSING_VALUES = "detectMissingValues";
+    /** Report missing values with given level of reporting: IGNORE, INFO, WARNING, ERROR. */
+    public static final String REPORT_MISSING_VALUES_LEVEL	= "detectMissingValuesLevel"; //$NON-NLS-1$
     /** Report duplicate values. */
-    public static final String REPORT_DUPL_VALUES = "reportDuplicateValues";
+    public static final String REPORT_DUPL_VALUES_LEVEL		= "reportDuplicateValuesLevel"; //$NON-NLS-1$
     /** Report similar values. */
-    public static final String REPORT_SIM_VALUES = "reportSimilarValues";
+    public static final String REPORT_SIM_VALUES_LEVEL		= "reportSimilarValuesLevel"; //$NON-NLS-1$
+    
     /** Report similar values: word compare. */
     public static final String REPORT_SIM_VALUES_WORD_COMPARE = 
             "reportSimilarValuesWordCompare";
@@ -359,28 +376,56 @@ public final class RBEPreferences {
 
     
     //--- Reporting/Performance ------------------------------------------------
-
     /**
      * Gets whether to report keys with missing values.
      * @return <code>true</code> if reporting
      */
     public static boolean getReportMissingValues() {
-        return PREFS.getBoolean(REPORT_MISSING_VALUES);
+    	return PREFS.getInt(REPORT_MISSING_VALUES_LEVEL) != VALIDATION_MESSAGE_IGNORE;
     }
+    
+    /**
+     * Returns the level of reporting for missing values.
+     * @return VALIDATION_MESSAGE_IGNORE or VALIDATION_MESSAGE_INFO or
+     * VALIDATION_MESSAGE_WARNING or VALIDATION_MESSAGE_ERROR. 
+     */
+    public static int getReportMissingValuesLevel() {
+    	return PREFS.getInt(REPORT_MISSING_VALUES_LEVEL);
+    }
+
     /**
      * Gets whether to report keys with duplicate values.
      * @return <code>true</code> if reporting
      */
     public static boolean getReportDuplicateValues() {
-        return PREFS.getBoolean(REPORT_DUPL_VALUES);
+        return PREFS.getInt(REPORT_DUPL_VALUES_LEVEL) != VALIDATION_MESSAGE_IGNORE;
     }
+    
+    /**
+     * Returns the level of reporting for duplicate values.
+     * @return VALIDATION_MESSAGE_IGNORE or VALIDATION_MESSAGE_INFO or
+     * VALIDATION_MESSAGE_WARNING or VALIDATION_MESSAGE_ERROR. 
+     */
+    public static int getReportDuplicateValuesLevel() {
+        return PREFS.getInt(REPORT_DUPL_VALUES_LEVEL);
+    }
+
     /**
      * Gets whether to report keys with similar values.
      * @return <code>true</code> if reporting
      */
     public static boolean getReportSimilarValues() {
-        return PREFS.getBoolean(REPORT_SIM_VALUES);
+        return PREFS.getInt(REPORT_SIM_VALUES_LEVEL) != VALIDATION_MESSAGE_IGNORE;
     }
+    /**
+     * Returns the level of reporting for similar values.
+     * @return VALIDATION_MESSAGE_IGNORE or VALIDATION_MESSAGE_INFO or
+     * VALIDATION_MESSAGE_WARNING or VALIDATION_MESSAGE_ERROR. 
+     */
+    public static int getReportSimilarValuesLevel() {
+    	return PREFS.getInt(REPORT_SIM_VALUES_LEVEL);
+    }
+
     /**
      * Gets whether to use the "word compare" method when reporting similar
      * values.
