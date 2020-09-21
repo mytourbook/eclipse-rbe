@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %plugin.name
 Bundle-SymbolicName: com.essiembre.eclipse.rbe;singleton:=true
-Bundle-Version: 1.0.6.2017-03-26-wolfgang
+Bundle-Version: 1.0.7.2020-09-21-MT
 Bundle-Activator: com.essiembre.eclipse.rbe.RBEPlugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %plugin.provider
 Require-Bundle: org.eclipse.ui,
