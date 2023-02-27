@@ -111,7 +111,7 @@ public class I18nPage extends ScrolledComposite {
             editingComposite.setShowFocusedControl(true);
             createSashRightSide();
 
-            sashForm.setWeights(new int[] { 25, 75 });
+            sashForm.setWeights(new int[] { 40, 60 }); 
 
         }
 
