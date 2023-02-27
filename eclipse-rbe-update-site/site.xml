@@ -3,7 +3,7 @@
    <description name="Eclipse ResourceBundle Editor Update Site">
       Eclipse plugin for editing Java resource bundles. Lets you manage all localized properties files in one screen. Some features: sorted keys, warning icons on missing keys/values, conversion to/from Unicode, hierarchical view of keys, and more.
    </description>
-   <feature url="features/com.essiembre.eclipse.rbe_1.0.8.2023-02-27-MT-2.jar" id="com.essiembre.eclipse.rbe" version="1.0.8.2023-02-27-MT-2">
+   <feature url="features/com.essiembre.eclipse.rbe_1.0.8.2023-02-27-MT-3.jar" id="com.essiembre.eclipse.rbe" version="1.0.8.2023-02-27-MT-3">
       <category name="com.essiembre.eclipse.rbe"/>
    </feature>
    <category-def name="com.essiembre.eclipse.rbe" label="Resource Bundle Editor">
