@@ -177,6 +177,9 @@ public class ResourceBundleEditor extends MultiPageEditorPart implements IGotoMa
       index = addPage(newLocalePage);
       setPageText(index, RBEPlugin.getString("editor.new.tab"));
       setPageImage(index, UIUtils.getImage(UIUtils.IMAGE_NEW_PROPERTIES_FILE));
+
+      // run async to "overwrite" the default selection
+      Display.getDefault().asyncExec(() -> setActivePage(0));
    }
 
    public void addResource(IFile resource, Locale locale) {
