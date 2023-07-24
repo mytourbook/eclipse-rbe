@@ -2,7 +2,7 @@
 <feature
       id="com.essiembre.eclipse.rbe"
       label="ResourceBundle Editor"
-      version="1.0.8.2023-02-27-MT-3"
+      version="1.0.9.2023-07-24-MT-4"
       provider-name="Pascal Essiembre"
       plugin="com.essiembre.eclipse.rbe">
 
