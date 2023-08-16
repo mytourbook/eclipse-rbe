@@ -408,17 +408,17 @@ public class ResourceBundleEditor extends MultiPageEditorPart implements IGotoMa
    }
 
    private class ResourceChangeListener implements IResourceChangeListener {
-    
+
       @Override
       public void resourceChanged(IResourceChangeEvent event) {
-      
+
          boolean deltaFound = false;
-         
+
          for (IPath path : paths) {
             IResourceDelta delta = event.getDelta().findMember(path);
             deltaFound |= delta != null;
          }
-         
+
          if (deltaFound) {
             resourceMediator.reloadProperties();
             i18nPage.refreshTextBoxes();
