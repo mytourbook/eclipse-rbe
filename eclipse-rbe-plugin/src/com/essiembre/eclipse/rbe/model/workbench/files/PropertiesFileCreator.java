@@ -53,7 +53,7 @@ public abstract class PropertiesFileCreator {
         }
         String contents = "";
         if (RBEPreferences.getShowGenerator()) {
-            contents = PropertiesGenerator.GENERATED_BY;
+            contents = PropertiesGenerator.getGeneratedBy();
         }
         InputStream stream = 
             new ByteArrayInputStream(contents.getBytes());

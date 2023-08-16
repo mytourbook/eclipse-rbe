@@ -176,10 +176,13 @@ public class ResourceBundleWizard extends Wizard implements INewWizard {
      * We will initialize file contents with a sample text.
      */
     private InputStream openContentStream() {
+       
         String contents = "";
+        
         if (RBEPreferences.getShowGenerator()) {
-            contents = PropertiesGenerator.GENERATED_BY;
+            contents = PropertiesGenerator.getGeneratedBy(); 
         }
+        
         return new ByteArrayInputStream(contents.getBytes());
     }
 
