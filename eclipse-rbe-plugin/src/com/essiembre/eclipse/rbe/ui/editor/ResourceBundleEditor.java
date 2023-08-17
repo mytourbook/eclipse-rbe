@@ -420,8 +420,10 @@ public class ResourceBundleEditor extends MultiPageEditorPart implements IGotoMa
          }
 
          if (deltaFound) {
+
             resourceMediator.reloadProperties();
-            i18nPage.refreshTextBoxes();
+
+            Display.getDefault().syncExec(() -> i18nPage.refreshTextBoxes());
          }
       }
    }
