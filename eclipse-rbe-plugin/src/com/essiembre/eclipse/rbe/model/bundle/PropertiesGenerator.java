@@ -131,11 +131,18 @@ public final class PropertiesGenerator {
                key = PropertiesGenerator.convertUnicodeToEncoded(key);
                value = PropertiesGenerator.convertUnicodeToEncoded(value);
             }
+
             if (comment != null && comment.length() > 0) {
+
+               // cleanup new line chars
+               comment = comment.replaceAll("\r\n|\r|\n", SYSTEM_LINE_SEP);
+
                text.append(comment);
             }
+
             appendKey(text, key, equalIndex, bundleEntry.isCommented());
             appendValue(text, value, equalIndex, bundleEntry.isCommented());
+
             text.append(SYSTEM_LINE_SEP);
          }
       }
@@ -203,13 +210,13 @@ public final class PropertiesGenerator {
     *           the value to add
     * @param equalIndex
     *           the equal sign position
-    * @param commented
+    * @param isKeyCommented
     *           is the value commented
     */
    private static void appendValue(StringBuffer text,
                                    String value,
                                    int equalIndex,
-                                   boolean commented) {
+                                   boolean isKeyCommented) {
 
       if (value != null) {
 
@@ -247,7 +254,7 @@ public final class PropertiesGenerator {
             saveValue(text, value);
 
          } else {
-            
+
             // Wrap lines
             if (RBEPreferences.getWrapLines() && valueStartPos < lineLength) {
 
@@ -286,13 +293,15 @@ public final class PropertiesGenerator {
                         text.append(SYSTEM_LINE_SEP);
                      }
                   }
+
                   valueBuf.delete(0, endPos);
+
                   // Figure out starting position for next line
                   if (!RBEPreferences.getWrapAlignEqualSigns()) {
                      valueStartPos = RBEPreferences.getWrapIndentSpaces();
                   }
 
-                  if (commented && valueStartPos > 0) {
+                  if (isKeyCommented && valueStartPos > 0) {
                      text.append("##");
                   }
 
